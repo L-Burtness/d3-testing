@@ -6,5 +6,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  
+  selectedChart: string = "bar";
+
+  showBarChart() {
+    this.selectedChart = "bar";
+  }
+
+  showLineChart() {
+    this.selectedChart = "line";
+  }
+
 }
