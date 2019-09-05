@@ -81,9 +81,9 @@ export class BarChartComponent implements OnInit {
     barGroups
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', (g) => xScale(g.language))
-      .attr('y', (g) => yScale(g.value))
-      .attr('height', (g) => this.height - yScale(g.value))
+      .attr('x', (d) => xScale(d.language))
+      .attr('y', (d) => yScale(d.value))
+      .attr('height', (d) => this.height - yScale(d.value))
       .attr('width', xScale.bandwidth())
       .style('fill', '#e6ffff')                                               /* Fill color */
     /*************************************************/
@@ -91,10 +91,10 @@ export class BarChartComponent implements OnInit {
     /************* Total numbers on bars *****************/
     barGroups.append('text')
       .attr('class', 'value')
-      .attr('x', (a) => xScale(a.language) + xScale.bandwidth() / 2)
-      .attr('y', (a) => yScale(a.value) + 30)
+      .attr('x', (d) => xScale(d.language) + xScale.bandwidth() / 2)
+      .attr('y', (d) => yScale(d.value) + 30)
       .attr('text-anchor', 'middle')
-      .text((a) => `${a.value}%`);
+      .text((d) => `${d.value}%`);
     /****************************************************/
 
     /************ Title and labels *******************/
@@ -141,26 +141,18 @@ export class BarChartComponent implements OnInit {
         .transition()
         .duration(300)
         .attr('opacity', 0.6)
-        .attr('x', (a) => xScale(a.language) - 5)
+        .attr('x', (d) => xScale(d.language) - 5)
         .attr('width', xScale.bandwidth() + 10)
 
       const y = yScale(actual.value)
 
-      chart.append('line')
-        .attr('id', 'limit')
-        .attr('x1', 0)
-        .attr('y1', y)
-        .attr('x2', this.width)
-        .attr('y2', y)
-        .style('stroke', 'red');
-
       barGroups.append('text')
         .attr('class', 'divergence')
-        .attr('x', (a) => xScale(a.language) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) + 30)
+        .attr('x', (d) => xScale(d.language) + xScale.bandwidth() / 2)
+        .attr('y', (d) => yScale(d.value) + 30)
         .attr('text-anchor', 'middle')
-        .text((a, idx) => {
-          const divergence = (a.value - actual.value)
+        .text((d, idx) => {
+          const divergence = (d.value - actual.value)
           
           let text = ''
           if (divergence > 0) text += '+'
@@ -178,7 +170,7 @@ export class BarChartComponent implements OnInit {
         .transition()
         .duration(300)
         .attr('opacity', 1)
-        .attr('x', (a) => xScale(a.language))
+        .attr('x', (d) => xScale(d.language))
         .attr('width', xScale.bandwidth())
 
       chart.selectAll('#limit').remove()
